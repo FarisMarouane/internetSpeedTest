@@ -7,7 +7,7 @@ function checkUploadSpeed(baseUrl, fileSize) {
   // An object of options to indicate where to post to
   var post_options = {
     host: baseUrl,
-    port: '443',
+    port: '443', // https' port
     path: '/post',
     method: 'POST',
     headers: {

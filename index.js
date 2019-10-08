@@ -6,12 +6,19 @@ const checkUploadSpeed = require('./uploadSpeed');
 const checkDownloadSpeed = require('./downloadSpeed');
 const printHelp = require('./printHelp');
 
+const {
+  REMOTE_SERVER,
+  UPLOAD_FILE_SIZE,
+  DOWNLOAD_IMAGE_SIZE,
+  DOWNLOAD_IMAGE_URL,
+} = require('./constants');
+
 const argument = process.argv[2];
 
 switch (argument) {
   case '--upload':
   case '-u':
-    checkUploadSpeed('postman-echo.com', 140889)
+    checkUploadSpeed(REMOTE_SERVER, UPLOAD_FILE_SIZE)
       .then(speed => {
         console.log(
           chalk.green.inverse(`Your internet upload speed is ${speed} mbps`),
@@ -24,10 +31,7 @@ switch (argument) {
     break;
   case '--download':
   case '-d':
-    checkDownloadSpeed(
-      'https://cdn.pixabay.com/photo/2019/10/01/13/06/landscape-4518196_960_720.jpg',
-      179773,
-    )
+    checkDownloadSpeed(DOWNLOAD_IMAGE_URL, DOWNLOAD_IMAGE_SIZE)
       .then(speed => {
         console.log(
           chalk.green.inverse(`Your internet download speed is ${speed} mbps`),

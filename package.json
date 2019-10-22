@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "babel-node -- ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/preset-env": "^7.6.3",
     "chalk": "^2.4.2",
     "command-line-usage": "^6.0.2",
+    "detect-character-encoding": "^0.8.0",
     "external-ip": "^2.1.1",
     "googleapis": "^43.0.0",
     "iplocation": "^6.1.0",
@@ -21,6 +24,9 @@
     "speedTest": "./index.js"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-prettier": "^3.1.1",

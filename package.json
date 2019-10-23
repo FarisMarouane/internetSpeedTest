@@ -14,9 +14,9 @@
     "@babel/preset-env": "^7.6.3",
     "chalk": "^2.4.2",
     "command-line-usage": "^6.0.2",
-    "detect-character-encoding": "^0.8.0",
     "external-ip": "^2.1.1",
     "googleapis": "^43.0.0",
+    "haversine": "^1.1.1",
     "iplocation": "^6.1.0",
     "public-ip": "^3.2.0"
   },

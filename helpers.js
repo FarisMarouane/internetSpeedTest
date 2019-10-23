@@ -1,17 +1,49 @@
-// const publicIp = require('public-ip');
-const { promisify } = require('util'); //<-- Require promisify
-const getIP = promisify(require('external-ip')());
+const { promisify } = require('util');
+const getIP = promisify(
+  require('external-ip')({
+    timeout: 8000,
+    getIP: 'parallel',
+    verbose: true,
+  }),
+);
+const haversine = require('haversine');
 
 async function getExternalIpAddress() {
-  const ip = await getIP(); //Ip v4
+  let ip;
+
+  try {
+    ip = await getIP(); //Ip v4
+  } catch (error) {
+    console.log('OAOA: ', error);
+    process.exit(1);
+  }
 
   return ip;
 }
 
-function getUrl(servers, ...regions) {
-  const keys = regions.map(k => k.toLowerCase());
-  console.log('keys: ', keys);
-  return servers[keys[0]][keys[1]];
+function getUrl(servers, latitude, longitude, continent) {
+  const continentServers = servers[continent.toLowerCase()];
+  console.log('continentServers: ', continentServers);
+
+  let distance = haversine(
+    { latitude, longitude },
+    continentServers[0].geoLocalisation,
+  );
+  let url = undefined;
+
+  continentServers.forEach(server => {
+    const calculatedDistance = haversine(
+      { latitude, longitude },
+      server.geoLocalisation,
+    );
+    console.log('calculatedDistance: ', calculatedDistance);
+    if (calculatedDistance <= distance) {
+      distance = calculatedDistance;
+      url = server.url;
+    }
+  });
+
+  return url;
 }
 
 module.exports = {

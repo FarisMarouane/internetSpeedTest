@@ -31,6 +31,9 @@ try {
     case '--download':
     case '-d':
       testDownloadSpeed();
+      // .catch(e => {
+      //   throw new Error('Request timed out determining your ip');
+      // });
       break;
     case '--help':
     case '-h':
@@ -45,22 +48,17 @@ try {
       break;
   }
 } catch (error) {
-  console.log('ShITTY ERROR: ', error);
+  console.log('ShITTY ERROR: ');
+  process.exit(1);
 }
 
 async function testDownloadSpeed() {
-  try {
-    const { continent, countryCode } = await getServeInfo();
-    const url = getUrl(DOWNLOAD_SERVERS, continent, countryCode);
+  const { continent, latitude, longitude } = await getServeInfo();
+  const url = getUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
+  console.log('URL: ', url);
 
-    console.log('URL: ', url);
-
-    const speed = await checkDownloadSpeed(url);
-    console.log(
-      chalk.green.inverse(`Your internet download speed is ${speed} mbps`),
-    );
-  } catch (error) {
-    console.log(chalk.red.inverse(error));
-    process.exit(1);
-  }
+  const speed = await checkDownloadSpeed(url);
+  console.log(
+    chalk.green.inverse(`Your internet download speed is ${speed} mbps`),
+  );
 }

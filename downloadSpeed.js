@@ -19,7 +19,10 @@ function checkDownloadSpeed(url) {
             throw error;
           }
 
-          startTime = new Date().getTime();
+          response.once('data', () => {
+            console.log('Once data');
+            startTime = new Date().getTime();
+          });
 
           response.on('data', data => {
             file.write(data);

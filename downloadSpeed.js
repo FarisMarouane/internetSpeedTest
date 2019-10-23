@@ -1,16 +1,14 @@
 const https = require('https');
 const http = require('http');
 const fs = require('fs');
-const detectCharacterEncoding = require('detect-character-encoding');
 
 function checkDownloadSpeed(url) {
   let startTime;
 
-  if (url.startsWith('http')) {
+  if (url.includes('https')) {
     return new Promise((resolve, reject) => {
       try {
-        return http.get(url, response => {
-          // response.setEncoding('utf-32be');
+        return https.get(url, response => {
           const file = fs.createWriteStream('./documents/file');
 
           if (response.statusCode !== 200) {
@@ -22,11 +20,9 @@ function checkDownloadSpeed(url) {
           }
 
           startTime = new Date().getTime();
-          const arrBuff = Buffer.alloc(1000000);
 
           response.on('data', data => {
             file.write(data);
-            // Buffer.concat([arrBuff, data]);
           });
 
           const size = response.headers['content-length'];
@@ -35,14 +31,9 @@ function checkDownloadSpeed(url) {
             const endTime = new Date().getTime();
             const duration = (endTime - startTime) / 1000;
             const bitsLoaded = size * 8;
-            // const bitsLoaded = size;
             const bps = (bitsLoaded / duration).toFixed(2);
             const kbps = (bps / 1024).toFixed(2);
             const mbps = (kbps / 1024).toFixed(2);
-
-            const charsetMatch = detectCharacterEncoding(arrBuff);
-
-            console.log('charsetMatch !!! ', charsetMatch);
 
             file.end();
 
@@ -53,13 +44,11 @@ function checkDownloadSpeed(url) {
         reject(error);
       }
     });
-  }
-
-  if (url.startsWith('https')) {
+  } else {
+    // http protocol
     return new Promise((resolve, reject) => {
       try {
-        return https.get(url, response => {
-          // response.setEncoding('utf-32be');
+        return http.get(url, response => {
           const file = fs.createWriteStream('./documents/file');
 
           if (response.statusCode !== 200) {
@@ -71,11 +60,9 @@ function checkDownloadSpeed(url) {
           }
 
           startTime = new Date().getTime();
-          const arrBuff = Buffer.alloc(1000000);
 
           response.on('data', data => {
             file.write(data);
-            // Buffer.concat([arrBuff, data]);
           });
 
           const size = response.headers['content-length'];
@@ -84,14 +71,9 @@ function checkDownloadSpeed(url) {
             const endTime = new Date().getTime();
             const duration = (endTime - startTime) / 1000;
             const bitsLoaded = size * 8;
-            // const bitsLoaded = size;
             const bps = (bitsLoaded / duration).toFixed(2);
             const kbps = (bps / 1024).toFixed(2);
             const mbps = (kbps / 1024).toFixed(2);
-
-            const charsetMatch = detectCharacterEncoding(arrBuff);
-
-            console.log('charsetMatch !!! ', charsetMatch);
 
             file.end();
 

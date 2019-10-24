@@ -9,14 +9,7 @@ const getIP = promisify(
 const haversine = require('haversine');
 
 async function getExternalIpAddress() {
-  let ip;
-
-  try {
-    ip = await getIP(); //Ip v4
-  } catch (error) {
-    console.log('OAOA: ', error);
-    process.exit(1);
-  }
+  let ip = await getIP(); //Ip v4;
 
   return ip;
 }
@@ -36,7 +29,6 @@ function getUrl(servers, latitude, longitude, continent) {
       { latitude, longitude },
       server.geoLocalisation,
     );
-    console.log('calculatedDistance: ', calculatedDistance);
     if (calculatedDistance <= distance) {
       distance = calculatedDistance;
       url = server.url;

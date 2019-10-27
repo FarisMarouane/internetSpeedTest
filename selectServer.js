@@ -14,8 +14,6 @@ async function getServeInfo() {
 
   const continent = timezone.split('/')[0];
 
-  console.log('continent: ', continent);
-
   return {
     continent,
     latitude,

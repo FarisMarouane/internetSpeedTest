@@ -4,8 +4,7 @@ const fs = require('fs');
 function checkUploadSpeed(baseUrl, fileSize) {
   let startTime;
 
-  // An object of options to indicate where to post to
-  var post_options = {
+  const post_options = {
     host: baseUrl,
     port: '443', // https' port
     path: '/post',
@@ -15,8 +14,7 @@ function checkUploadSpeed(baseUrl, fileSize) {
     },
   };
   return new Promise((resolve, reject) => {
-    // Set up the request
-    var post_req = https.request(post_options, function(res) {
+    const post_req = https.request(post_options, function(res) {
       res.setEncoding('utf8');
       res.on('data', function() {
         const endTime = new Date().getTime();

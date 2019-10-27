@@ -6,19 +6,26 @@ const DOWNLOAD_IMAGE_URL =
 const DOWNLOAD_SERVERS = {
   europe: [
     {
-      url: 'http://ping.online.net/10Mo.dat',
+      urls: [
+        'http://ping.online.net/10Mo.dat',
+        'http://ping.online.net/50Mo.dat',
+        'http://ping.online.net/200Mo.dat',
+      ], // FR
       geoLocalisation: { latitude: 48.8648, longitude: 2.3335 },
     },
     {
-      url: 'https://speedtest.serverius.net/files/10mb.bin',
+      urls: [
+        'https://speedtest.serverius.net/files/10mb.bin',
+        'https://speedtest.serverius.net/files/100mb.bin',
+      ], // NL
       geoLocalisation: { latitude: 52.3991, longitude: 4.9358 },
     },
   ],
   asia: [
     {
-      url: 'http://82.200.209.194/test/1G',
+      urls: ['http://82.200.209.194/test/1G'], // Kazakhstan
       geoLocalisation: { latitude: 43.2567, longitude: 76.9286 },
-    }, // Kazakhstan
+    },
   ],
   america: [],
 };

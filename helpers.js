@@ -3,7 +3,7 @@ const getIP = promisify(
   require('external-ip')({
     timeout: 8000,
     getIP: 'parallel',
-    verbose: true,
+    verbose: false,
   }),
 );
 const haversine = require('haversine');
@@ -14,15 +14,14 @@ async function getExternalIpAddress() {
   return ip;
 }
 
-function getUrl(servers, latitude, longitude, continent) {
+function getUrls(servers, latitude, longitude, continent) {
   const continentServers = servers[continent.toLowerCase()];
-  console.log('continentServers: ', continentServers);
 
   let distance = haversine(
     { latitude, longitude },
     continentServers[0].geoLocalisation,
   );
-  let url = undefined;
+  let urls = undefined;
 
   continentServers.forEach(server => {
     const calculatedDistance = haversine(
@@ -31,14 +30,14 @@ function getUrl(servers, latitude, longitude, continent) {
     );
     if (calculatedDistance <= distance) {
       distance = calculatedDistance;
-      url = server.url;
+      urls = server.urls;
     }
   });
 
-  return url;
+  return urls;
 }
 
 module.exports = {
   getExternalIpAddress,
-  getUrl,
+  getUrls,
 };

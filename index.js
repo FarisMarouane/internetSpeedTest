@@ -6,7 +6,7 @@ const checkUploadSpeed = require('./uploadSpeed');
 const checkDownloadSpeed = require('./downloadSpeed');
 const printHelp = require('./printHelp');
 const { DOWNLOAD_SERVERS } = require('./constants');
-const { getUrl } = require('./helpers');
+const { getUrls } = require('./helpers');
 const { getServeInfo } = require('./selectServer');
 
 const { REMOTE_SERVER_UPLOAD, UPLOAD_FILE_SIZE } = require('./constants');
@@ -29,10 +29,17 @@ switch (argument) {
     break;
   case '--download':
   case '-d':
-    testDownloadSpeed().catch(e => {
-      console.log(chalk.red('Download speed test failed: ', e));
-      process.exit(1);
-    });
+    testDownloadSpeed()
+      .then(speed => {
+        console.log(
+          chalk.green.inverse(`Your internet download speed is ${speed} mbps`),
+        );
+        process.exit(0);
+      })
+      .catch(e => {
+        console.log(chalk.red('Download speed test failed: ', e));
+        process.exit(1);
+      });
     break;
   case '--help':
   case '-h':
@@ -48,14 +55,14 @@ switch (argument) {
 }
 
 async function testDownloadSpeed() {
-  const { continent, latitude, longitude } = await getServeInfo().catch(e => {
-    console.log(chalk.red('Failed to get server info ', e));
-  });
-  const url = getUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
-  console.log('URL: ', url);
+  try {
+    console.log('testDownloadSpeed called');
+    const { continent, latitude, longitude } = await getServeInfo();
+    const urls = getUrls(DOWNLOAD_SERVERS, latitude, longitude, continent);
 
-  const speed = await checkDownloadSpeed(url);
-  console.log(
-    chalk.green.inverse(`Your internet download speed is ${speed} mbps`),
-  );
+    const speed = await checkDownloadSpeed(urls);
+    return speed;
+  } catch (error) {
+    return error;
+  }
 }

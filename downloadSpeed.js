@@ -1,12 +1,17 @@
 const https = require('https');
 const http = require('http');
 
+const thresholds = [10, 100, 500];
+
 // Returns an average speed (if all goes well!)
 function checkDownloadSpeed(urls) {
   let promiseArr = [];
+  let counter = 0;
 
   promiseArr = urls.map(url => {
-    return new Promise((resolve, reject) => makeRequest(url, resolve, reject));
+    return new Promise((resolve, reject) =>
+      makeRequest(url, counter, resolve, reject),
+    );
   });
 
   return Promise.all(promiseArr)
@@ -25,7 +30,7 @@ function checkDownloadSpeed(urls) {
 
 module.exports = checkDownloadSpeed;
 
-function makeRequest(url, resolve, reject) {
+function makeRequest(url, counter, resolve, reject) {
   let startTime;
   (!url.includes('https') ? http : https).get(url, response => {
     if (response.statusCode !== 200) {
@@ -41,10 +46,28 @@ function makeRequest(url, resolve, reject) {
 
     // Not all servers (due to availability) have files of the same sizes, hence the need to standarize
     response.on('data', chunk => {
-      if (arr.length <= 500000000) {
-        // 500 Mo
-        arr.push(chunk);
-        return;
+      switch (counter) {
+        case 0:
+          if (arr.length <= thresholds[0] * 1000000) {
+            // Times 1 million to get MB
+            arr.push(chunk);
+            return;
+          }
+          break;
+        case 1:
+          if (arr.length <= thresholds[1] * 1000000) {
+            arr.push(chunk);
+            return;
+          }
+          break;
+        case 2:
+          if (arr.length <= thresholds[2] * 1000000) {
+            arr.push(chunk);
+            return;
+          }
+          break;
+        default:
+          break;
       }
       response.destroy();
     });
@@ -61,4 +84,5 @@ function makeRequest(url, resolve, reject) {
       resolve(mbps);
     });
   });
+  counter++;
 }

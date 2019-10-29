@@ -8,17 +8,31 @@ const DOWNLOAD_SERVERS = {
     {
       urls: [
         'http://ping.online.net/10Mo.dat',
-        'http://ping.online.net/50Mo.dat',
-        'http://ping.online.net/200Mo.dat',
+        'http://ping.online.net/100Mo.dat',
+        'http://ping.online.net/500Mo.dat',
       ], // FR
       geoLocalisation: { latitude: 48.8648, longitude: 2.3335 },
     },
     {
       urls: [
-        'https://speedtest.serverius.net/files/10mb.bin',
         'https://speedtest.serverius.net/files/100mb.bin',
+        'https://speedtest.serverius.net/files/1000mb.bin',
       ], // NL
       geoLocalisation: { latitude: 52.3991, longitude: 4.9358 },
+    },
+    {
+      urls: [
+        'http://ipv4.download.thinkbroadband.com/100MB.zip',
+        'http://ipv4.download.thinkbroadband.com/1GB.zip',
+      ], // UK
+      geoLocalisation: { latitude: 52.3333, longitude: -2.0167 },
+    },
+    {
+      urls: [
+        'https://speed.hetzner.de/100MB.bin',
+        'https://speed.hetzner.de/1GB.bin',
+      ], // GERM
+      geoLocalisation: { latitude: 49.4478, longitude: 11.0683 },
     },
   ],
   asia: [

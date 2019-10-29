@@ -15,6 +15,7 @@ const DOWNLOAD_SERVERS = {
     },
     {
       urls: [
+        'https://speedtest.serverius.net/files/10mb.bin',
         'https://speedtest.serverius.net/files/100mb.bin',
         'https://speedtest.serverius.net/files/1000mb.bin',
       ], // NL
@@ -22,6 +23,7 @@ const DOWNLOAD_SERVERS = {
     },
     {
       urls: [
+        'http://ipv4.download.thinkbroadband.com/10MB.zip',
         'http://ipv4.download.thinkbroadband.com/100MB.zip',
         'http://ipv4.download.thinkbroadband.com/1GB.zip',
       ], // UK

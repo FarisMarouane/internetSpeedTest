@@ -15,6 +15,7 @@ const DOWNLOAD_SERVERS = {
     },
     {
       urls: [
+        'https://speedtest.serverius.net/files/10mb.bin',
         'https://speedtest.serverius.net/files/100mb.bin',
         'https://speedtest.serverius.net/files/1000mb.bin',
       ], // NL
@@ -22,6 +23,7 @@ const DOWNLOAD_SERVERS = {
     },
     {
       urls: [
+        'http://ipv4.download.thinkbroadband.com/10MB.zip',
         'http://ipv4.download.thinkbroadband.com/100MB.zip',
         'http://ipv4.download.thinkbroadband.com/1GB.zip',
       ], // UK
@@ -30,6 +32,7 @@ const DOWNLOAD_SERVERS = {
     {
       urls: [
         'https://speed.hetzner.de/100MB.bin',
+        'https://speed.hetzner.de/100MB.bin',
         'https://speed.hetzner.de/1GB.bin',
       ], // GERM
       geoLocalisation: { latitude: 49.4478, longitude: 11.0683 },
@@ -37,7 +40,11 @@ const DOWNLOAD_SERVERS = {
   ],
   asia: [
     {
-      urls: ['http://82.200.209.194/test/1G'], // Kazakhstan
+      urls: [
+        'http://82.200.209.194/test/1G',
+        'http://82.200.209.194/test/1G',
+        'http://82.200.209.194/test/1G',
+      ], // Kazakhstan
       geoLocalisation: { latitude: 43.2567, longitude: 76.9286 },
     },
   ],

@@ -37,7 +37,14 @@ function getUrls(servers, latitude, longitude, continent) {
   return urls;
 }
 
+function timeout(ms) {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(), ms);
+  });
+}
+
 module.exports = {
   getExternalIpAddress,
   getUrls,
+  timeout,
 };

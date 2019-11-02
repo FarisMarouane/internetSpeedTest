@@ -1,15 +1,20 @@
 const https = require('https');
 const http = require('http');
 
+const { timeout } = require('./helpers');
+
 const thresholds = [20, 20, 20];
 const NUMBER_OF_REQUESTS = 1;
+const TEST_MAX_DURATION = 30_000;
 
 // Returns an average speed (if all goes well!)
 function checkDownloadSpeed(urls) {
+  const timer = timeout(TEST_MAX_DURATION);
+
   let promiseArr = [];
 
   promiseArr = urls.slice(0, NUMBER_OF_REQUESTS).map((url, i) => {
-    return makeRequest(url, i);
+    return makeRequest(url, i, timer);
   });
 
   return Promise.all(promiseArr)
@@ -25,10 +30,15 @@ function checkDownloadSpeed(urls) {
     });
 }
 
-function makeRequest(url, counter) {
+function makeRequest(url, counter, timer) {
   let startTime;
   return new Promise((resolve, reject) => {
     (url.includes('https') ? https : http).get(url, response => {
+      timer
+        .then(() => {
+          response.destroy();
+        })
+        .catch(() => response.destroy());
       if (response.statusCode !== 200) {
         const error = new Error(
           'The speed test has failed',
@@ -75,7 +85,6 @@ function makeRequest(url, counter) {
       });
 
       response.once('end', () => {
-        console.log(`Url ${url} stopped receiving data`);
         const buffer = Buffer.concat(arr);
         const endTime = new Date().getTime();
         const duration = (endTime - startTime) / 1000;

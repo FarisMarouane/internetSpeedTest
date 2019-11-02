@@ -55,14 +55,9 @@ switch (argument) {
 }
 
 async function testDownloadSpeed() {
-  try {
-    console.log('testDownloadSpeed called');
-    const { continent, latitude, longitude } = await getServeInfo();
-    const urls = getUrls(DOWNLOAD_SERVERS, latitude, longitude, continent);
+  const { continent, latitude, longitude } = await getServeInfo();
+  const urls = getUrls(DOWNLOAD_SERVERS, latitude, longitude, continent);
 
-    const speed = await checkDownloadSpeed(urls);
-    return speed;
-  } catch (error) {
-    return error;
-  }
+  const speed = await checkDownloadSpeed(urls);
+  return speed;
 }

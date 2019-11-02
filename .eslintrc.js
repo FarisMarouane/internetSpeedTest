@@ -4,9 +4,10 @@ module.exports = {
     node: true,
   },
   extends: ['eslint:recommended', 'plugin:prettier/recommended'],
-  parserOptions: {
-    ecmaVersion: 2018,
-  },
+  parser: 'babel-eslint',
+  // parserOptions: {
+  //   ecmaVersion: 2018,
+  // },
   rules: {
     'prettier/prettier': [
       'error',

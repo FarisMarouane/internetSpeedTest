@@ -1,20 +1,15 @@
 const https = require('https');
 const http = require('http');
 
-const { timeout } = require('./helpers');
-
 const thresholds = [20, 20, 20];
 const NUMBER_OF_REQUESTS = 1;
-const TEST_MAX_DURATION = 30_000;
 
 // Returns an average speed (if all goes well!)
-function checkDownloadSpeed(urls) {
-  const timer = timeout(TEST_MAX_DURATION);
-
+function checkDownloadSpeed(urls, testTimeout) {
   let promiseArr = [];
 
   promiseArr = urls.slice(0, NUMBER_OF_REQUESTS).map((url, i) => {
-    return makeRequest(url, i, timer);
+    return makeRequest(url, i, testTimeout);
   });
 
   return Promise.all(promiseArr)
@@ -30,11 +25,11 @@ function checkDownloadSpeed(urls) {
     });
 }
 
-function makeRequest(url, counter, timer) {
+function makeRequest(url, counter, testTimeout) {
   let startTime;
   return new Promise((resolve, reject) => {
     (url.includes('https') ? https : http).get(url, response => {
-      timer
+      testTimeout
         .then(() => {
           response.destroy();
         })

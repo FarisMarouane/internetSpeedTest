@@ -10,8 +10,11 @@ const { getUrls } = require('./helpers');
 const { getServeInfo } = require('./selectServer');
 
 const { REMOTE_SERVER_UPLOAD, UPLOAD_FILE_SIZE } = require('./constants');
+const { timeout } = require('./helpers');
 
 const argument = process.argv[2];
+const TEST_MAX_DURATION = 30_000;
+const testTimeout = timeout(TEST_MAX_DURATION);
 
 switch (argument) {
   case '--upload':
@@ -29,7 +32,7 @@ switch (argument) {
     break;
   case '--download':
   case '-d':
-    testDownloadSpeed()
+    testDownloadSpeed(testTimeout)
       .then(speed => {
         console.log(
           chalk.green.inverse(`Your internet download speed is ${speed} mbps`),
@@ -54,15 +57,10 @@ switch (argument) {
     break;
 }
 
-async function testDownloadSpeed() {
-  try {
-    console.log('testDownloadSpeed called');
-    const { continent, latitude, longitude } = await getServeInfo();
-    const urls = getUrls(DOWNLOAD_SERVERS, latitude, longitude, continent);
+async function testDownloadSpeed(testTimeout) {
+  const { continent, latitude, longitude } = await getServeInfo();
+  const urls = getUrls(DOWNLOAD_SERVERS, latitude, longitude, continent);
 
-    const speed = await checkDownloadSpeed(urls);
-    return speed;
-  } catch (error) {
-    return error;
-  }
+  const speed = await checkDownloadSpeed(urls, testTimeout);
+  return speed;
 }

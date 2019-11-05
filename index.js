@@ -6,7 +6,7 @@ const checkUploadSpeed = require('./uploadSpeed');
 const checkDownloadSpeed = require('./downloadSpeed');
 const printHelp = require('./printHelp');
 const { DOWNLOAD_SERVERS } = require('./constants');
-const { getUrls } = require('./helpers');
+const { getUrl } = require('./helpers');
 const { getServeInfo } = require('./selectServer');
 
 const { REMOTE_SERVER_UPLOAD, UPLOAD_FILE_SIZE } = require('./constants');
@@ -59,8 +59,8 @@ switch (argument) {
 
 async function testDownloadSpeed(testTimeout) {
   const { continent, latitude, longitude } = await getServeInfo();
-  const urls = getUrls(DOWNLOAD_SERVERS, latitude, longitude, continent);
+  const url = getUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
 
-  const speed = await checkDownloadSpeed(urls, testTimeout);
+  const speed = await checkDownloadSpeed(url, testTimeout);
   return speed;
 }

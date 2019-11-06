@@ -1,31 +1,14 @@
 const https = require('https');
 const http = require('http');
 
-const thresholds = [20, 20, 20];
-const NUMBER_OF_REQUESTS = 1;
-
 // Returns an average speed (if all goes well!)
-function checkDownloadSpeed(urls, testTimeout) {
-  let promiseArr = [];
-
-  promiseArr = urls.slice(0, NUMBER_OF_REQUESTS).map((url, i) => {
-    return makeRequest(url, i, testTimeout);
+function checkDownloadSpeed(url, testTimeout) {
+  return makeRequest(url, testTimeout).catch(e => {
+    throw new Error('checkDownloadSpeed: ', e);
   });
-
-  return Promise.all(promiseArr)
-    .then(arr => {
-      const average =
-        arr.reduce((acc, curr) => {
-          return acc + curr;
-        }) / arr.length;
-      return average.toFixed();
-    })
-    .catch(e => {
-      throw new Error('checkDownloadSpeed: ', e);
-    });
 }
 
-function makeRequest(url, counter, testTimeout) {
+function makeRequest(url, testTimeout) {
   let startTime;
   return new Promise((resolve, reject) => {
     (url.includes('https') ? https : http).get(url, response => {
@@ -48,35 +31,8 @@ function makeRequest(url, counter, testTimeout) {
         startTime = new Date().getTime();
       });
 
-      // Not all servers (due to availability) have files of the same sizes, hence the need to standarize
       response.on('data', chunk => {
-        switch (counter) {
-          case 0:
-            if (Buffer.concat(arr).length <= thresholds[0] * 1_000_000) {
-              // Times 1 million to get the number of bytes in millions
-              arr.push(chunk);
-              return;
-            }
-            break;
-          case 1:
-            if (Buffer.concat(arr).length <= thresholds[1] * 1_000_000) {
-              arr.push(chunk);
-              return;
-            }
-            break;
-          case 2: {
-            if (Buffer.concat(arr).length <= thresholds[2] * 1_000_000) {
-              // 3 000 000
-              arr.push(chunk);
-              return;
-            }
-            break;
-          }
-
-          default:
-            break;
-        }
-        response.destroy();
+        arr.push(chunk);
       });
 
       response.once('end', () => {

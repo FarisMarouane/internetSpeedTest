@@ -14,7 +14,7 @@ async function getExternalIpAddress() {
   return ip;
 }
 
-function getUrls(servers, latitude, longitude, continent) {
+function getUrl(servers, latitude, longitude, continent) {
   const continentServers = servers[continent.toLowerCase()];
 
   let distance = haversine(
@@ -34,7 +34,7 @@ function getUrls(servers, latitude, longitude, continent) {
     }
   });
 
-  return urls;
+  return urls[0];
 }
 
 function timeout(ms) {
@@ -45,6 +45,6 @@ function timeout(ms) {
 
 module.exports = {
   getExternalIpAddress,
-  getUrls,
+  getUrl,
   timeout,
 };

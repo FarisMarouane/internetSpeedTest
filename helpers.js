@@ -8,10 +8,8 @@ const getIP = promisify(
 );
 const haversine = require('haversine');
 
-async function getExternalIpAddress() {
-    let ip = await getIP(); //Ip v4;
-
-    return ip;
+function getExternalIpAddress() {
+  return getIP(); //Ip v4;
 }
 
 function getUrl(servers, latitude, longitude, continent) {

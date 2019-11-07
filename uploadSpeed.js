@@ -1,46 +1,67 @@
-const https = require('https');
+const request = require('request');
 const fs = require('fs');
 
-function checkUploadSpeed(baseUrl, fileSize) {
+function checkUploadSpeed(url, file, timeout) {
     let startTime;
+    const readStream = fs.createReadStream(file);
+    let fileSize = fs.statSync(file)['size']; // In bytes
+
+    let counter = 0;
 
     const post_options = {
-        host: baseUrl,
-        port: '443', // https' port
-        path: '/post',
+        url,
         method: 'POST',
         headers: {
-            'Content-Type': 'image/jpeg',
+            'Content-Length': fileSize,
+            'Content-Type': 'application/octet-stream',
         },
     };
+
     return new Promise((resolve, reject) => {
-        const post_req = https.request(post_options, function(res) {
-            res.setEncoding('utf8');
-            res.on('data', function() {
+        const post_req = request.post(post_options, function(err, response) {
+            if (err) {
+                reject(`An error occured while uploading data1: ${err}`);
+            }
+            if (response?.statusCode === 200) {
                 const endTime = new Date().getTime();
                 const duration = (endTime - startTime) / 1000;
-                const bitsLoaded = fileSize * 8;
-                const bps = (bitsLoaded / duration).toFixed(2);
+                const bitsUploaded = fileSize * 8;
+                const bps = (bitsUploaded / duration).toFixed(2);
                 const kbps = (bps / 1024).toFixed(2);
                 const mbps = (kbps / 1024).toFixed(2);
                 resolve(mbps);
-            });
-        });
-
-        post_req.on('error', err => {
-            reject('The speed test has failed: ', err);
-        });
-
-        fs.readFile('./documents/landscape.jpg', (err, data) => {
-            if (err) throw err;
-            if (data) {
-                post_req.write(data);
-                startTime = new Date().getTime();
-                post_req.end();
             } else {
-                console.log('No data to post');
+                reject(
+                    `An error occured while uploading data: ${response?.statusCode}`,
+                );
             }
+
+            response?.on('error', e =>
+                reject(`An error occured while uploading data2: ${e}`),
+            );
         });
+
+        post_req.on('end', () => console.log('post_req ended'));
+
+        post_req.on('error', e =>
+            reject(`An error occured while uploading data3: ${e}`),
+        );
+
+        readStream.on('error', e => console.log('readStream err: ', e));
+
+        readStream.on('end', () => console.log('readStream ended'));
+
+        readStream.on('data', () => {
+            if (counter++ === 0) startTime = new Date().getTime();
+        });
+
+        readStream.pipe(post_req);
+
+        timeout
+            .then(() => {
+                post_req.end();
+            })
+            .catch(e => console.log('Timeout err: ', e));
     });
 }
 

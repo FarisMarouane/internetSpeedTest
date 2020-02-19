@@ -17,50 +17,54 @@ const TEST_MAX_DURATION = 30_000;
 const testTimeout = timeout(TEST_MAX_DURATION);
 
 switch (argument) {
-  case '--upload':
-  case '-u':
-    checkUploadSpeed(REMOTE_SERVER_UPLOAD, UPLOAD_FILE_SIZE)
-      .then(speed => {
+    case '--upload':
+    case '-u':
+        checkUploadSpeed(REMOTE_SERVER_UPLOAD, UPLOAD_FILE_SIZE)
+            .then(speed => {
+                console.log(
+                    chalk.green.inverse(
+                        `Your internet upload speed is ${speed} mbps`,
+                    ),
+                );
+            })
+            .catch(error => {
+                console.log(chalk.red.inverse(error));
+                process.exit(1);
+            });
+        break;
+    case '--download':
+    case '-d':
+        testDownloadSpeed(testTimeout)
+            .then(speed => {
+                console.log(
+                    chalk.green.inverse(
+                        `Your internet download speed is ${speed} mbps`,
+                    ),
+                );
+                process.exit(0);
+            })
+            .catch(e => {
+                console.log(chalk.red('Download speed test failed: ', e));
+                process.exit(1);
+            });
+        break;
+    case '--help':
+    case '-h':
+        printHelp();
+        break;
+    default:
         console.log(
-          chalk.green.inverse(`Your internet upload speed is ${speed} mbps`),
-        );
-      })
-      .catch(error => {
-        console.log(chalk.red.inverse(error));
-        process.exit(1);
-      });
-    break;
-  case '--download':
-  case '-d':
-    testDownloadSpeed(testTimeout)
-      .then(speed => {
-        console.log(
-          chalk.green.inverse(`Your internet download speed is ${speed} mbps`),
-        );
-        process.exit(0);
-      })
-      .catch(e => {
-        console.log(chalk.red('Download speed test failed: ', e));
-        process.exit(1);
-      });
-    break;
-  case '--help':
-  case '-h':
-    printHelp();
-    break;
-  default:
-    console.log(
-      chalk.red(`You need to need to provide a valid argument to the command.
+            chalk.red(`You need to need to provide a valid argument to the command.
 	Run speedTest -h for help`),
-    );
-    process.exit(1);
-    break;
+        );
+        process.exit(1);
+        break;
 }
 
 async function testDownloadSpeed(testTimeout) {
-  const { continent, latitude, longitude } = await getServeInfo();
-  const url = getUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
+    const { continent, latitude, longitude } = await getServeInfo();
+    const url = getUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
 
-  const speed = await checkDownloadSpeed(url, testTimeout);
-  return speed;
+    const speed = await checkDownloadSpeed(url, testTimeout);
+    return speed;
 }

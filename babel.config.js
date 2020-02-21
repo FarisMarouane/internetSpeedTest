@@ -1,11 +1,11 @@
 module.exports = function(api) {
-  api.cache(true);
+    api.cache(true);
 
-  const presets = ['@babel/preset-env'];
-  const plugins = ['@babel/plugin-proposal-numeric-separator'];
+    const presets = ['@babel/preset-env'];
+    const plugins = ['@babel/plugin-proposal-numeric-separator'];
 
-  return {
-    presets,
-    plugins,
-  };
+    return {
+        presets,
+        plugins,
+    };
 };

@@ -21,11 +21,7 @@ switch (argument) {
     case '-u':
         checkUploadSpeed(REMOTE_SERVER_UPLOAD, UPLOAD_FILE_SIZE)
             .then(speed => {
-                console.log(
-                    chalk.green.inverse(
-                        `Your internet upload speed is ${speed} mbps`,
-                    ),
-                );
+                console.log(chalk.green.inverse(`Your internet upload speed is ${speed} mbps`));
             })
             .catch(error => {
                 console.log(chalk.red.inverse(error));
@@ -36,11 +32,7 @@ switch (argument) {
     case '-d':
         testDownloadSpeed(testTimeout)
             .then(speed => {
-                console.log(
-                    chalk.green.inverse(
-                        `Your internet download speed is ${speed} mbps`,
-                    ),
-                );
+                console.log(chalk.green.inverse(`Your internet download speed is ${speed} mbps`));
                 process.exit(0);
             })
             .catch(e => {

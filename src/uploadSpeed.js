@@ -31,21 +31,15 @@ function checkUploadSpeed(url, file, timeout) {
                 const mbps = (kbps / 1024).toFixed(2);
                 resolve(mbps);
             } else {
-                reject(
-                    `An error occured while uploading data: ${response?.statusCode}`,
-                );
+                reject(`An error occured while uploading data: ${response?.statusCode}`);
             }
 
-            response?.on('error', e =>
-                reject(`An error occured while uploading data2: ${e}`),
-            );
+            response?.on('error', e => reject(`An error occured while uploading data2: ${e}`));
         });
 
         post_req.on('end', () => console.log('post_req ended'));
 
-        post_req.on('error', e =>
-            reject(`An error occured while uploading data3: ${e}`),
-        );
+        post_req.on('error', e => reject(`An error occured while uploading data3: ${e}`));
 
         readStream.on('error', e => console.log('readStream err: ', e));
 

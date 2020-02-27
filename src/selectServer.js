@@ -1,7 +1,7 @@
 const iplocation = require('iplocation').default;
 const chalk = require('chalk');
 
-const { getExternalIpAddress } = require('./helpers');
+const { getExternalIpAddress } = require('./helpers.js');
 
 async function getServeInfo() {
     let ip;

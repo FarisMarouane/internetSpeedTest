@@ -1,15 +1,13 @@
-#!/usr/bin/env node
-
 const chalk = require('chalk');
 
-const checkUploadSpeed = require('./uploadSpeed');
-const checkDownloadSpeed = require('./downloadSpeed');
-const printHelp = require('./printHelp');
-const { DOWNLOAD_SERVERS, UPLOAD_SERVERS } = require('./constants');
-const { getUrl } = require('./helpers');
-const { getServeInfo } = require('./selectServer');
+const checkUploadSpeed = require('./uploadSpeed.js');
+const checkDownloadSpeed = require('./downloadSpeed.js');
+const printHelp = require('./printHelp.js');
+const { DOWNLOAD_SERVERS, UPLOAD_SERVERS } = require('./constants.js');
+const { getUrl } = require('./helpers.js');
+const { getServeInfo } = require('./selectServer.js');
 
-const { timeout } = require('./helpers');
+const { timeout } = require('./helpers.js');
 
 const argument = process.argv[2];
 const TEST_MAX_DURATION = 30_000;
@@ -20,11 +18,7 @@ switch (argument) {
     case '-u':
         testUploadSpeed(testTimeout)
             .then(speed => {
-                console.log(
-                    chalk.green.inverse(
-                        `Your internet upload speed is ${speed} mbps`,
-                    ),
-                );
+                console.log(chalk.green.inverse(`Your internet upload speed is ${speed} mbps`));
                 process.exit(0);
             })
             .catch(error => {
@@ -69,6 +63,6 @@ async function testUploadSpeed(testTimeout) {
     const { continent, latitude, longitude } = await getServeInfo();
     const url = getUrl(UPLOAD_SERVERS, latitude, longitude, continent);
 
-    const speed = await checkUploadSpeed(url, './bigFile', testTimeout);
+    const speed = await checkUploadSpeed(url, '../bigFile', testTimeout);
     return speed;
 }

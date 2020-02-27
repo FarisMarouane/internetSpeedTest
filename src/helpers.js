@@ -9,7 +9,7 @@ const getIP = promisify(
 const haversine = require('haversine');
 
 function getExternalIpAddress() {
-  return getIP(); //Ip v4;
+    return getIP(); //Ip v4;
 }
 
 function getUrl(servers, latitude, longitude, continent) {

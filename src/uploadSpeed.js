@@ -1,5 +1,5 @@
-const request = require('request');
-const fs = require('fs');
+import request from 'request';
+import fs from 'fs';
 
 function checkUploadSpeed(url, file, timeout) {
     let startTime;
@@ -59,4 +59,4 @@ function checkUploadSpeed(url, file, timeout) {
     });
 }
 
-module.exports = checkUploadSpeed;
+export default checkUploadSpeed;

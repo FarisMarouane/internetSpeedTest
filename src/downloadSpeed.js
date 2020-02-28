@@ -1,5 +1,5 @@
-const https = require('https');
-const http = require('http');
+import http from 'http';
+import https from 'https';
 
 // Returns an average speed (if all goes well!)
 function checkDownloadSpeed(url, testTimeout) {
@@ -46,4 +46,4 @@ function makeRequest(url, testTimeout) {
     });
 }
 
-module.exports = checkDownloadSpeed;
+export default checkDownloadSpeed;

@@ -1,4 +1,4 @@
-const commandLineUsage = require('command-line-usage');
+import commandLineUsage from 'command-line-usage';
 
 const sections = [
     {
@@ -35,4 +35,4 @@ function printHelp() {
     console.log(usage);
 }
 
-module.exports = printHelp;
+export default printHelp;

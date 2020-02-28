@@ -1,5 +1,5 @@
-const iplocation = require('iplocation').default;
-const chalk = require('chalk');
+import { default as iplocation } from 'iplocation';
+import chalk from 'chalk';
 
 const { getExternalIpAddress } = require('./helpers.js');
 
@@ -23,4 +23,4 @@ async function getServeInfo() {
     };
 }
 
-module.exports = { getServeInfo };
+export default getServeInfo;

@@ -1,13 +1,11 @@
-const chalk = require('chalk');
+import chalk from 'chalk';
+import checkUploadSpeed from './uploadSpeed';
+import checkDownloadSpeed from './downloadSpeed';
+import printHelp from './printHelp';
 
-const checkUploadSpeed = require('./uploadSpeed.js');
-const checkDownloadSpeed = require('./downloadSpeed.js');
-const printHelp = require('./printHelp.js');
-const { DOWNLOAD_SERVERS, UPLOAD_SERVERS } = require('./constants.js');
-const { getUrl } = require('./helpers.js');
-const { getServeInfo } = require('./selectServer.js');
-
-const { timeout } = require('./helpers.js');
+import { DOWNLOAD_SERVERS, UPLOAD_SERVERS } from './constants';
+import { getUrl, timeout } from './helpers';
+import getServeInfo from './selectServer.js';
 
 const argument = process.argv[2];
 const TEST_MAX_DURATION = 30_000;

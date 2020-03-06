@@ -20,7 +20,12 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         cacheDirectory: true,
-                        presets: ['@babel/preset-env'],
+                        presets: [
+                            '@babel/preset-env',
+                            {
+                                modules: 'false',
+                            },
+                        ],
                         plugins: [
                             '@babel/plugin-proposal-numeric-separator',
                             '@babel/plugin-proposal-optional-chaining',
@@ -35,6 +40,7 @@ module.exports = {
         extensions: ['.js'],
     },
     optimization: {
+        nodeEnv: 'production', // Removes checks and warnings usually unnecessary in production
         minimize: true,
         minimizer: [new TerserPlugin({ sourceMap: true })],
     },

@@ -21,6 +21,7 @@ module.exports = {
                             '@babel/plugin-proposal-numeric-separator',
                             '@babel/plugin-proposal-optional-chaining',
                             '@babel/plugin-transform-runtime',
+                            'syntax-dynamic-import',
                         ],
                     },
                 },

@@ -1,15 +1,11 @@
 const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
     target: 'node',
-    devtool: 'source-map',
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index.js',
-        libraryTarget: 'commonjs2',
     },
     module: {
         rules: [
@@ -20,12 +16,7 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         cacheDirectory: true,
-                        presets: [
-                            '@babel/preset-env',
-                            {
-                                modules: 'false',
-                            },
-                        ],
+                        presets: ['@babel/preset-env'],
                         plugins: [
                             '@babel/plugin-proposal-numeric-separator',
                             '@babel/plugin-proposal-optional-chaining',
@@ -38,11 +29,6 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js'],
-    },
-    optimization: {
-        nodeEnv: 'production', // Removes checks and warnings usually unnecessary in production
-        minimize: true,
-        minimizer: [new TerserPlugin({ sourceMap: true })],
     },
     node: { fs: 'empty', net: 'empty', tls: 'empty' },
 };

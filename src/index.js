@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 import checkUploadSpeed from './uploadSpeed';
-import checkDownloadSpeed from './downloadSpeed';
 import printHelp from './printHelp';
 
 import { DOWNLOAD_SERVERS, UPLOAD_SERVERS } from './constants';
@@ -53,8 +52,10 @@ async function testDownloadSpeed(testTimeout) {
     const { continent, latitude, longitude } = await getServeInfo();
     const url = getUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
 
-    const speed = await checkDownloadSpeed(url, testTimeout);
-    return speed;
+    return import('./downloadSpeed').then(async ({ default: checkDownloadSpeed }) => {
+        const speed = await checkDownloadSpeed(url, testTimeout);
+        return speed;
+    });
 }
 
 async function testUploadSpeed(testTimeout) {

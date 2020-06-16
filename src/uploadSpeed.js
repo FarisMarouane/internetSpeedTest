@@ -3,8 +3,8 @@ import fs from 'fs';
 
 function checkUploadSpeed(url, file, timeout) {
     let startTime;
-    const readStream = fs.createReadStream(file);
-    let fileSize = fs.statSync(file)['size']; // In bytes
+    const readStream = fs.createReadStream(`./dist/${file}`);
+    let fileSize = fs.statSync(`./dist/${file}`)['size']; // In bytes
 
     let counter = 0;
 

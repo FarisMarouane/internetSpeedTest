@@ -26,6 +26,14 @@ module.exports = {
                     },
                 },
             },
+            {
+                test: /\.random$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                    },
+                ],
+            },
         ],
     },
     resolve: {

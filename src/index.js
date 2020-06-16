@@ -5,6 +5,8 @@ import { DOWNLOAD_SERVERS, UPLOAD_SERVERS } from './constants';
 import { getUrl, timeout } from './helpers';
 import getServeInfo from './selectServer.js';
 
+import bigFile from '../bigFile.random';
+
 const argument = process.argv[2];
 const TEST_MAX_DURATION = 30_000;
 const testTimeout = timeout(TEST_MAX_DURATION);
@@ -62,7 +64,7 @@ async function testUploadSpeed(testTimeout) {
     const url = getUrl(UPLOAD_SERVERS, latitude, longitude, continent);
 
     return import('./uploadSpeed').then(async ({ default: checkUploadSpeed }) => {
-        const speed = await checkUploadSpeed(url, '../bigFile', testTimeout);
+        const speed = await checkUploadSpeed(url, bigFile, testTimeout);
         return speed;
     });
 }

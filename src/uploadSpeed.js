@@ -1,7 +1,7 @@
 import request from 'request';
 import fs from 'fs';
 
-function checkUploadSpeed(url, file, timeout) {
+function checkUploadSpeed(url, file) {
     let startTime;
     const readStream = fs.createReadStream(`./dist/${file}`);
     let fileSize = fs.statSync(`./dist/${file}`)['size']; // In bytes
@@ -50,12 +50,6 @@ function checkUploadSpeed(url, file, timeout) {
         });
 
         readStream.pipe(post_req);
-
-        timeout
-            .then(() => {
-                post_req.end();
-            })
-            .catch(e => console.log('Timeout err: ', e));
     });
 }
 

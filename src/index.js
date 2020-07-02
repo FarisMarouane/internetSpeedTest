@@ -1,15 +1,11 @@
-#!/usr/bin/env node
+import chalk from 'chalk';
+import printHelp from './printHelp';
 
-const chalk = require('chalk');
+import { DOWNLOAD_SERVERS, UPLOAD_SERVERS } from './constants';
+import { getUrl, timeout } from './helpers';
+import getServeInfo from './selectServer.js';
 
-const checkUploadSpeed = require('./uploadSpeed');
-const checkDownloadSpeed = require('./downloadSpeed');
-const printHelp = require('./printHelp');
-const { DOWNLOAD_SERVERS, UPLOAD_SERVERS } = require('./constants');
-const { getUrl } = require('./helpers');
-const { getServeInfo } = require('./selectServer');
-
-const { timeout } = require('./helpers');
+import bigFile from '../bigFile.random';
 
 const argument = process.argv[2];
 const TEST_MAX_DURATION = 30_000;
@@ -20,11 +16,7 @@ switch (argument) {
     case '-u':
         testUploadSpeed(testTimeout)
             .then(speed => {
-                console.log(
-                    chalk.green.inverse(
-                        `Your internet upload speed is ${speed} mbps`,
-                    ),
-                );
+                console.log(chalk.green.inverse(`Your internet upload speed is ${speed} mbps`));
                 process.exit(0);
             })
             .catch(error => {
@@ -61,14 +53,18 @@ async function testDownloadSpeed(testTimeout) {
     const { continent, latitude, longitude } = await getServeInfo();
     const url = getUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
 
-    const speed = await checkDownloadSpeed(url, testTimeout);
-    return speed;
+    return import('./downloadSpeed').then(async ({ default: checkDownloadSpeed }) => {
+        const speed = await checkDownloadSpeed(url, testTimeout);
+        return speed;
+    });
 }
 
 async function testUploadSpeed(testTimeout) {
     const { continent, latitude, longitude } = await getServeInfo();
     const url = getUrl(UPLOAD_SERVERS, latitude, longitude, continent);
 
-    const speed = await checkUploadSpeed(url, './bigFile', testTimeout);
-    return speed;
+    return import('./uploadSpeed').then(async ({ default: checkUploadSpeed }) => {
+        const speed = await checkUploadSpeed(url, bigFile, testTimeout);
+        return speed;
+    });
 }

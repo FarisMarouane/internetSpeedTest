@@ -24,3 +24,5 @@ async function getServeInfo() {
 }
 
 export default getServeInfo;
+
+// Add caching mecanism

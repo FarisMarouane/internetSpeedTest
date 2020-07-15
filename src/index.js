@@ -3,7 +3,7 @@ import printHelp from './printHelp';
 
 import { DOWNLOAD_SERVERS, UPLOAD_SERVERS } from './constants';
 import { getUrl, timeout } from './helpers';
-import getServeInfo from './selectServer.js';
+import getServeInfo from './getServerInfo.js';
 
 import bigFile from '../bigFile.random';
 

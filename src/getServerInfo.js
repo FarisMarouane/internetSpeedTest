@@ -1,7 +1,7 @@
 import { default as iplocation } from 'iplocation';
 import chalk from 'chalk';
 
-const { getExternalIpAddress } = require('./helpers.js');
+import { getExternalIpAddress } from './helpers.js';
 
 async function getServeInfo() {
     let ip;

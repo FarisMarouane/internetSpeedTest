@@ -6,7 +6,7 @@ const getIP = promisify(
         verbose: false,
     }),
 );
-const haversine = require('haversine');
+import haversine from 'haversine';
 
 export function getExternalIpAddress() {
     return getIP(); //Ip v4;

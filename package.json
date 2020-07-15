@@ -1,7 +1,7 @@
 {
-    "name": "speed_test",
+    "name": "internet_speed_test",
     "version": "1.0.0",
-    "description": "",
+    "description": "An simple command line tool to measure both download and upload internet speed",
     "main": "dist/index.js",
     "scripts": {
         "start": "node dist/index.js",
@@ -9,9 +9,14 @@
         "build:prod": "webpack --config webpack.config.prod.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "internet",
+        "speed"
+    ],
+    "homepage": "https://github.com/FarisMarouane/internetSpeedTest",
+    "author": "Marouane Faris",
     "license": "ISC",
+    "private": "false",
     "dependencies": {
         "@babel/runtime": "^7.8.4",
         "babel-plugin-syntax-dynamic-import": "^6.18.0",

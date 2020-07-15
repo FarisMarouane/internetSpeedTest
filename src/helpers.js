@@ -16,7 +16,7 @@ export function getUrl(servers, latitude, longitude, continent) {
     const continentServers = servers[continent.toLowerCase()];
 
     let distance = haversine({ latitude, longitude }, continentServers[0].geoLocalisation);
-    let urls = undefined;
+    let urls;
 
     continentServers.forEach(server => {
         const calculatedDistance = haversine({ latitude, longitude }, server.geoLocalisation);

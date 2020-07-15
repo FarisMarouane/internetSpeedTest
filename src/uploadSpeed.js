@@ -20,7 +20,7 @@ function checkUploadSpeed(url, file) {
     return new Promise((resolve, reject) => {
         const post_req = request.post(post_options, function(err, response) {
             if (err) {
-                reject(`An error occured while uploading data1: ${err}`);
+                reject(`An error occured while uploading data: ${err}`);
             }
             if (response?.statusCode === 200) {
                 const endTime = new Date().getTime();
@@ -31,19 +31,13 @@ function checkUploadSpeed(url, file) {
                 const mbps = (kbps / 1024).toFixed(2);
                 resolve(mbps);
             } else {
-                reject(`An error occured while uploading data: ${response?.statusCode}`);
+                reject(`An error occured while uploading data:: ${response?.statusCode}`);
             }
-
-            response?.on('error', e => reject(`An error occured while uploading data2: ${e}`));
         });
 
-        post_req.on('end', () => console.log('post_req ended'));
+        post_req.on('error', e => reject(`An error occured while uploading data: ${e}`));
 
-        post_req.on('error', e => reject(`An error occured while uploading data3: ${e}`));
-
-        readStream.on('error', e => console.log('readStream err: ', e));
-
-        readStream.on('end', () => console.log('readStream ended'));
+        readStream.on('error', e => reject(`An error occured while uploading data: ${e}`));
 
         readStream.on('data', () => {
             if (counter++ === 0) startTime = new Date().getTime();

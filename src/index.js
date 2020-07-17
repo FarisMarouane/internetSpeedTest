@@ -49,7 +49,7 @@ switch (argument) {
         break;
 }
 
-async function testDownloadSpeed(testTimeout) {
+export async function testDownloadSpeed(testTimeout) {
     const { continent, latitude, longitude } = await getServeInfo();
     const url = getUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
 
@@ -59,7 +59,7 @@ async function testDownloadSpeed(testTimeout) {
     });
 }
 
-async function testUploadSpeed() {
+export async function testUploadSpeed() {
     const { continent, latitude, longitude } = await getServeInfo();
     const url = getUrl(UPLOAD_SERVERS, latitude, longitude, continent);
 

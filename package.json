@@ -1,6 +1,6 @@
 {
     "name": "internet_speed_test",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "An simple command line tool to measure both download and upload internet speed",
     "main": "dist/internetSpeed.js",
     "files": [

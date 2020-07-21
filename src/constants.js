@@ -38,7 +38,23 @@ export const DOWNLOAD_SERVERS = {
             },
         },
     ],
-    america: [],
+
+    america: [
+        {
+            urls: ['http://mirror.sfo12.us.leaseweb.net/speedtest/1000mb.bin'], // US WEST
+            geoLocalisation: {
+                latitude: 37.3882,
+                longitude: -121.889,
+            },
+        },
+        {
+            urls: ['http://mirror.wdc1.us.leaseweb.net/speedtest/1000mb.bin'], // US EST
+            geoLocalisation: {
+                latitude: 38.9208,
+                longitude: -77.036,
+            },
+        },
+    ],
 };
 
 export const UPLOAD_SERVERS = {

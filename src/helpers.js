@@ -12,7 +12,7 @@ export function getExternalIpAddress() {
     return getIP(); //Ip v4;
 }
 
-export function getUrl(servers, latitude, longitude, continent) {
+export function getDownloadUrl(servers, latitude, longitude, continent) {
     const continentServers = servers[continent.toLowerCase()];
 
     let distance = haversine({ latitude, longitude }, continentServers[0].geoLocalisation);

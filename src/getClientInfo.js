@@ -3,7 +3,7 @@ import chalk from 'chalk';
 
 import { getExternalIpAddress } from './helpers.js';
 
-async function getServeInfo() {
+async function getClientInfo() {
     let ip;
     try {
         ip = await getExternalIpAddress();
@@ -23,6 +23,6 @@ async function getServeInfo() {
     };
 }
 
-export default getServeInfo;
+export default getClientInfo;
 
 // Add caching mecanism

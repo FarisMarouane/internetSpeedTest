@@ -43,5 +43,5 @@ module.exports = {
     resolve: {
         extensions: ['.js'],
     },
-    node: { fs: 'empty', net: 'empty', tls: 'empty' },
+    node: { fs: 'empty', net: 'empty', tls: 'empty', __dirname: false },
 };

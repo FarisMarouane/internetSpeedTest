@@ -1,10 +1,12 @@
 import request from 'request';
 import fs from 'fs';
+import path from 'path';
 
 function checkUploadSpeed(url, file) {
     let startTime;
-    const readStream = fs.createReadStream(`./dist/${file}`);
-    let fileSize = fs.statSync(`./dist/${file}`)['size']; // In bytes
+    const filePath = path.join(__dirname, `/${file}`);
+    const readStream = fs.createReadStream(filePath);
+    let fileSize = fs.statSync(filePath)['size']; // In bytes
 
     let counter = 0;
 

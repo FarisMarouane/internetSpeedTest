@@ -43,7 +43,7 @@ switch (argument) {
     default:
         console.log(
             chalk.red(`You need to need to provide a valid argument to the command.
-	Run speedTest -h for help`),
+	Run internetSpeed -h for help`),
         );
         process.exit(0);
         break;

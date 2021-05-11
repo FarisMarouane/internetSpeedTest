@@ -12,17 +12,23 @@ function makeRequest(url, testTimeout) {
     let startTime;
     return new Promise((resolve, reject) => {
         (url.includes('https') ? https : http).get(url, response => {
-            testTimeout
-                .then(() => {
-                    response.destroy();
-                })
-                .catch(() => response.destroy());
+            const arr = [];
+
+            testTimeout.then(() => {
+                response.destroy();
+                const buffer = Buffer.concat(arr);
+                const endTime = new Date().getTime();
+                const duration = (endTime - startTime) / 1000;
+                const bits = (buffer.length * 8).toFixed(2);
+                const kbits = (bits / 1024).toFixed(2);
+                const mbps = +(kbits / 1024 / duration).toFixed(2);
+                resolve(mbps);
+            });
+
             if (response.statusCode !== 200) {
                 const error = new Error('The speed test has failed', response.statusCode);
                 reject(error);
             }
-
-            const arr = [];
 
             response.once('data', () => {
                 startTime = new Date().getTime();
@@ -36,10 +42,9 @@ function makeRequest(url, testTimeout) {
                 const buffer = Buffer.concat(arr);
                 const endTime = new Date().getTime();
                 const duration = (endTime - startTime) / 1000;
-                const bitsLoaded = buffer.length * 8;
-                const bps = (bitsLoaded / duration).toFixed(2);
-                const kbps = (bps / 1024).toFixed(2);
-                const mbps = +(kbps / 1024).toFixed(2);
+                const bits = (buffer.length * 8).toFixed(2);
+                const kbits = (bits / 1024).toFixed(2);
+                const mbps = +(kbits / 1024 / duration).toFixed(2);
                 resolve(mbps);
             });
         });

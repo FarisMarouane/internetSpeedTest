@@ -8,7 +8,7 @@ import getClientInfo from './getClientInfo';
 import bigFile from '../bigFile.random';
 
 const argument = process.argv[2];
-const TEST_MAX_DURATION = 30_000;
+const TEST_MAX_DURATION = 45_000;
 const testTimeout = timeout(TEST_MAX_DURATION);
 
 switch (argument) {

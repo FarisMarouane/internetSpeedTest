@@ -20,7 +20,7 @@ switch (argument) {
                 process.exit(0);
             })
             .catch(error => {
-                console.log(chalk.red.inverse(error));
+                console.log(chalk.red('Upload speed test failed: ', error));
                 process.exit(1);
             });
         break;

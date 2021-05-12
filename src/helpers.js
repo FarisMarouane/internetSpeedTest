@@ -16,17 +16,17 @@ export function getServerUrl(servers, latitude, longitude, continent) {
     const continentServers = servers[continent.toLowerCase()];
 
     let distance = haversine({ latitude, longitude }, continentServers[0].geoLocalisation);
-    let urls;
+    let url;
 
     continentServers.forEach(server => {
         const calculatedDistance = haversine({ latitude, longitude }, server.geoLocalisation);
         if (calculatedDistance <= distance) {
             distance = calculatedDistance;
-            urls = server.urls;
+            url = server.url;
         }
     });
 
-    return urls[0];
+    return url;
 }
 
 export function timeout(ms) {

@@ -4,7 +4,7 @@ import https from 'https';
 // Returns an average speed (if all goes well!)
 function checkDownloadSpeed(url, testTimeout) {
     return makeRequest(url, testTimeout).catch(e => {
-        throw new Error('checkDownloadSpeed: ', e);
+        throw new Error(e);
     });
 }
 
@@ -26,7 +26,7 @@ function makeRequest(url, testTimeout) {
             });
 
             if (response.statusCode !== 200) {
-                const error = new Error('The speed test has failed', response.statusCode);
+                const error = new Error(response.statusCode);
                 reject(error);
             }
 

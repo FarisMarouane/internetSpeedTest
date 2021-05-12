@@ -33,7 +33,7 @@ function checkUploadSpeed(url, file) {
                 const mbps = (kbps / 1024).toFixed(2);
                 resolve(mbps);
             } else {
-                reject(`An error occured while uploading data:: ${response?.statusCode}`);
+                reject(`An error occured while uploading data: ${response?.statusCode}`);
             }
         });
 

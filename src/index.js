@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import printHelp from './printHelp';
 
 import { DOWNLOAD_SERVERS, UPLOAD_SERVERS } from './constants';
-import { getDownloadUrl, timeout } from './helpers';
+import { getServerUrl, timeout } from './helpers';
 import getClientInfo from './getClientInfo';
 
 import bigFile from '../bigFile.random';
@@ -51,7 +51,7 @@ switch (argument) {
 
 export async function testDownloadSpeed(testTimeout) {
     const { continent, latitude, longitude } = await getClientInfo();
-    const url = getDownloadUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
+    const url = getServerUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
 
     return import('./downloadSpeed').then(async ({ default: checkDownloadSpeed }) => {
         const speed = await checkDownloadSpeed(url, testTimeout);
@@ -61,7 +61,7 @@ export async function testDownloadSpeed(testTimeout) {
 
 export async function testUploadSpeed() {
     const { continent, latitude, longitude } = await getClientInfo();
-    const url = getDownloadUrl(UPLOAD_SERVERS, latitude, longitude, continent);
+    const url = getServerUrl(UPLOAD_SERVERS, latitude, longitude, continent);
 
     return import('./uploadSpeed').then(async ({ default: checkUploadSpeed }) => {
         const speed = await checkUploadSpeed(url, bigFile);

@@ -51,7 +51,12 @@ export const DOWNLOAD_SERVERS = {
 };
 
 export const UPLOAD_SERVERS = {
-    europe: [],
+    europe: [
+        {
+            url: 'https://testmy.net/city/dublin_l',
+            geoLocalisation: { latitude: 53.349805, longitude: -6.26031 },
+        },
+    ],
     asia: [
         {
             url: 'http://sp.zi-tel.com/speedtest/upload.php', //IRAN

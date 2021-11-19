@@ -2,7 +2,7 @@ import request from 'request';
 import fs from 'fs';
 import path from 'path';
 
-function checkUploadSpeed(url, file) {
+function checkUploadSpeed(url, file, testTimeout) {
     let startTime;
     const filePath = path.join(__dirname, `/${file}`);
     const readStream = fs.createReadStream(filePath);
@@ -37,9 +37,25 @@ function checkUploadSpeed(url, file) {
             }
         });
 
+        testTimeout.then(() => {
+            readStream.destroy('timeout reached');
+        });
+
         post_req.on('error', e => reject(`An error occured while uploading data: ${e}`));
 
-        readStream.on('error', e => reject(`An error occured while uploading data: ${e}`));
+        readStream.on('error', e => {
+            if (e === 'timeout reached') {
+                post_req.abort();
+                const endTime = new Date().getTime();
+                const duration = (endTime - startTime) / 1000;
+                const bits = (readStream.bytesRead * 8).toFixed(2);
+                const kbits = (bits / 1024).toFixed(2);
+                const mbps = +(kbits / 1024 / duration).toFixed(2);
+                resolve(mbps);
+            } else {
+                reject(`An error occured while uploading data: ${e}`);
+            }
+        });
 
         readStream.on('data', () => {
             if (counter++ === 0) startTime = new Date().getTime();

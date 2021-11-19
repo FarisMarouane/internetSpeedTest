@@ -14,7 +14,7 @@ const testTimeout = timeout(TEST_MAX_DURATION);
 switch (argument) {
     case '--upload':
     case '-u':
-        testUploadSpeed()
+        testUploadSpeed(testTimeout)
             .then(speed => {
                 console.log(chalk.green.inverse(`Your internet upload speed is ${speed} mbps`));
                 process.exit(0);
@@ -59,12 +59,12 @@ export async function testDownloadSpeed(testTimeout) {
     });
 }
 
-export async function testUploadSpeed() {
+export async function testUploadSpeed(testTimeout) {
     const { continent, latitude, longitude } = await getClientInfo();
     const url = getServerUrl(UPLOAD_SERVERS, latitude, longitude, continent);
 
     return import('./uploadSpeed').then(async ({ default: checkUploadSpeed }) => {
-        const speed = await checkUploadSpeed(url, bigFile);
+        const speed = await checkUploadSpeed(url, bigFile, testTimeout);
         return speed;
     });
 }

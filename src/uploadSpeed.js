@@ -2,6 +2,12 @@ import request from 'request';
 import fs from 'fs';
 import path from 'path';
 
+import { UPLOAD_SERVERS } from './constants';
+import { getServerUrl } from './helpers';
+import getClientInfo from './getClientInfo';
+
+import bigFile from '../bigFile.random';
+
 function checkUploadSpeed(url, file, testTimeout) {
     let startTime;
     const filePath = path.join(__dirname, `/${file}`);
@@ -65,4 +71,12 @@ function checkUploadSpeed(url, file, testTimeout) {
     });
 }
 
-export default checkUploadSpeed;
+async function testUploadSpeed(testTimeout) {
+    const { continent, latitude, longitude } = await getClientInfo();
+    const url = getServerUrl(UPLOAD_SERVERS, latitude, longitude, continent);
+
+    const speed = await checkUploadSpeed(url, bigFile, testTimeout);
+    return speed;
+}
+
+export default testUploadSpeed;

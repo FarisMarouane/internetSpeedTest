@@ -1,7 +1,7 @@
 {
     "name": "internet_speed_test",
     "version": "1.0.1",
-    "description": "An simple command line tool to measure both download and upload internet speed",
+    "description": "A simple command line tool to measure both download and upload internet speed",
     "main": "dist/internetSpeed.js",
     "files": [
         "dist"
@@ -26,9 +26,13 @@
         "command-line-usage": "^6.0.2",
         "external-ip": "^2.1.1",
         "haversine": "^1.1.1",
+        "ink": "^3.2.0",
+        "ink-spinner": "^4.0.3",
         "iplocation": "^6.1.0",
         "public-ip": "^3.2.0",
-        "request": "^2.88.0"
+        "react": "^17.0.2",
+        "request": "^2.88.0",
+        "rxjs": "^7.8.1"
     },
     "bin": {
         "internetSpeed": "./dist/internetSpeed.js"
@@ -40,11 +44,14 @@
         "@babel/plugin-proposal-optional-chaining": "^7.7.5",
         "@babel/plugin-transform-runtime": "^7.8.3",
         "@babel/preset-env": "^7.6.3",
+        "@babel/preset-react": "^7.22.5",
         "babel-eslint": "^10.0.3",
         "babel-loader": "^8.0.6",
-        "eslint": "^6.6.0",
+        "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.5.0",
         "eslint-plugin-prettier": "^3.1.1",
+        "eslint-plugin-react": "^7.32.2",
+        "eslint-plugin-react-hooks": "^4.6.0",
         "file-loader": "^6.0.0",
         "prettier": "1.18.2",
         "terser-webpack-plugin": "^2.3.5",

@@ -19,7 +19,7 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         cacheDirectory: true,
-                        presets: ['@babel/preset-env'],
+                        presets: ['@babel/preset-env', '@babel/preset-react'],
                         plugins: [
                             '@babel/plugin-proposal-numeric-separator',
                             '@babel/plugin-proposal-optional-chaining',

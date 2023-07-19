@@ -1,16 +1,21 @@
 import http from 'http';
 import https from 'https';
+import { Observable, from } from 'rxjs';
 
-// Returns an average speed (if all goes well!)
-function checkDownloadSpeed(url, testTimeout) {
-    return makeRequest(url, testTimeout).catch(e => {
-        throw new Error(e);
-    });
+import { getServerUrl } from './helpers';
+import getClientInfo from './getClientInfo';
+import { DOWNLOAD_SERVERS } from './constants';
+
+async function checkDownloadSpeed(testTimeout) {
+    const { continent, latitude, longitude } = await getClientInfo();
+    const url = getServerUrl(DOWNLOAD_SERVERS, latitude, longitude, continent);
+
+    return makeRequest(url, testTimeout);
 }
 
 function makeRequest(url, testTimeout) {
     let startTime;
-    return new Promise((resolve, reject) => {
+    return new Observable(subscriber => {
         (url.includes('https') ? https : http).get(url, response => {
             const arr = [];
 
@@ -22,12 +27,15 @@ function makeRequest(url, testTimeout) {
                 const bits = (buffer.length * 8).toFixed(2);
                 const kbits = (bits / 1024).toFixed(2);
                 const mbps = +(kbits / 1024 / duration).toFixed(2);
-                resolve(mbps);
+
+                subscriber.next(mbps);
+                subscriber.complete();
             });
 
             if (response.statusCode !== 200) {
-                const error = new Error(response.statusCode);
-                reject(error);
+                const error = new Error(`Response error with status code: ${response.statusCode}`);
+
+                subscriber.error(error);
             }
 
             response.once('data', () => {
@@ -36,6 +44,14 @@ function makeRequest(url, testTimeout) {
 
             response.on('data', chunk => {
                 arr.push(chunk);
+                const buffer = Buffer.concat(arr);
+                const endTime = new Date().getTime();
+                const duration = (endTime - startTime) / 1000;
+                const bits = (buffer.length * 8).toFixed(2);
+                const kbits = (bits / 1024).toFixed(2);
+                const mbps = +(kbits / 1024 / duration).toFixed(2);
+
+                subscriber.next(mbps);
             });
 
             response.once('end', () => {
@@ -45,10 +61,16 @@ function makeRequest(url, testTimeout) {
                 const bits = (buffer.length * 8).toFixed(2);
                 const kbits = (bits / 1024).toFixed(2);
                 const mbps = +(kbits / 1024 / duration).toFixed(2);
-                resolve(mbps);
+
+                subscriber.next(mbps);
+                subscriber.complete();
             });
         });
     });
 }
 
-export default checkDownloadSpeed;
+function testDownloadSpeed(testTimeout) {
+    return from(checkDownloadSpeed(testTimeout));
+}
+
+export default testDownloadSpeed;

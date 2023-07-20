@@ -12,7 +12,6 @@ const FixedSpacer = ({ size }) => <>{' '.repeat(size)}</>;
 const ErrorMessage = ({ text }) => (
     <Box>
         <Text bold color="red">
-            ›
             <FixedSpacer size={1} />
         </Text>
         <Text dimColor>{text}</Text>
@@ -21,7 +20,6 @@ const ErrorMessage = ({ text }) => (
 );
 
 const DownloadSpeed = ({ isDone, downloadSpeed, downloadUnit }) => {
-    // const color = isDone || uploadSpeed ? 'green' : 'cyan';
     const color = isDone ? 'green' : 'cyan';
 
     return (
@@ -37,36 +35,22 @@ const DownloadSpeed = ({ isDone, downloadSpeed, downloadUnit }) => {
 const UploadSpeed = ({ isDone, uploadSpeed, uploadUnit }) => {
     const color = isDone ? 'green' : 'cyan';
 
-    if (uploadSpeed) {
-        return (
-            <Text color={color}>
-                {uploadSpeed}
-                <Text dimColor>{` ${uploadUnit} ↑`}</Text>
-            </Text>
-        );
-    }
-
     return (
-        <Text dimColor color={color}>
-            {' - Mbps ↑'}
+        <Text color={color}>
+            {uploadSpeed}
+            <Text dimColor>{uploadUnit}</Text>
+            <FixedSpacer size={1} />↑
         </Text>
     );
 };
 
 const Speed = ({ upload, ...data }) =>
-    upload ? (
-        <>
-            <DownloadSpeed {...data} />
-            <Text dimColor>{' / '}</Text>
-            <UploadSpeed {...data} />
-        </>
-    ) : (
-        <DownloadSpeed {...data} />
-    );
+    upload ? <UploadSpeed {...data} /> : <DownloadSpeed {...data} />;
 
 const Fast = ({ argument, testTimeout }) => {
-    const [error, setError] = useState('');
-    const [speed, setSpeed] = useState(undefined);
+    const [error, setError] = useState(null);
+    const [downloadSpeed, setDownloadSpeed] = useState(undefined);
+    const [uploadSpeed, setUploadSpeed] = useState(undefined);
     const [isDone, setIsDone] = useState(false);
     const { exit } = useApp();
 
@@ -77,14 +61,18 @@ const Fast = ({ argument, testTimeout }) => {
             case '--upload':
             case '-u':
                 testUploadSpeed(testTimeout)
-                    .then(speed => {
-                        setSpeed(speed);
-                        setIsDone(true);
-                        // process.exit(0);
-                    })
-                    .catch(error => {
-                        setError(error.message);
-                        exit();
+                    .pipe(mergeMap(v => v))
+                    .subscribe({
+                        next: speed => {
+                            setUploadSpeed(speed);
+                        },
+                        error: error => {
+                            setError(error.message);
+                            setIsDone(true);
+                        },
+                        complete: () => {
+                            setIsDone(true);
+                        },
                     });
                 break;
             case '--download':
@@ -93,11 +81,11 @@ const Fast = ({ argument, testTimeout }) => {
                     .pipe(mergeMap(v => v))
                     .subscribe({
                         next: speed => {
-                            setSpeed(speed);
+                            setDownloadSpeed(speed);
                         },
                         error: error => {
                             setError(error.message);
-                            exit();
+                            setIsDone(true);
                         },
                         complete: () => {
                             setIsDone(true);
@@ -147,7 +135,14 @@ const Fast = ({ argument, testTimeout }) => {
                         <FixedSpacer size={4} />
                     </Text>
                 )}
-                <Speed upload={upload} isDone={isDone} downloadUnit="Mbps" downloadSpeed={speed} />
+                <Speed
+                    upload={upload}
+                    isDone={isDone}
+                    uploadUnit="Mbps"
+                    downloadUnit="Mbps"
+                    downloadSpeed={downloadSpeed}
+                    uploadSpeed={uploadSpeed}
+                />
             </Box>
         </>
     );

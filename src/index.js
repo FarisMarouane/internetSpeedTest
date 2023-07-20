@@ -17,6 +17,7 @@ const main = async () => {
     );
 
     await app.waitUntilExit();
+    process.exit(0);
 };
 
 main();

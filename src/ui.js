@@ -95,14 +95,13 @@ const Fast = ({ argument, testTimeout }) => {
             case '--help':
             case '-h':
                 printHelp();
-                exit();
+                setIsDone(true);
                 break;
             default:
-                exit(
-                    Error(
-                        'You need to need to provide a valid argument to the command. Run internetSpeed -h for help',
-                    ),
+                setError(
+                    'You need to need to provide a valid argument to the command. Run internetSpeed -h for help',
                 );
+                setIsDone(true);
                 break;
         }
     }, [argument, exit, testTimeout]);
@@ -135,14 +134,16 @@ const Fast = ({ argument, testTimeout }) => {
                         <FixedSpacer size={4} />
                     </Text>
                 )}
-                <Speed
-                    upload={upload}
-                    isDone={isDone}
-                    uploadUnit="Mbps"
-                    downloadUnit="Mbps"
-                    downloadSpeed={downloadSpeed}
-                    uploadSpeed={uploadSpeed}
-                />
+                {(uploadSpeed || downloadSpeed) && (
+                    <Speed
+                        upload={upload}
+                        isDone={isDone}
+                        uploadUnit="Mbps"
+                        downloadUnit="Mbps"
+                        downloadSpeed={downloadSpeed}
+                        uploadSpeed={uploadSpeed}
+                    />
+                )}
             </Box>
         </>
     );

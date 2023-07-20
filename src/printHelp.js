@@ -33,7 +33,6 @@ const sections = [
 function printHelp() {
     const usage = commandLineUsage(sections);
     console.log(usage);
-    process.exit(0);
 }
 
 export default printHelp;

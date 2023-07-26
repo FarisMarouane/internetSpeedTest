@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { mergeMap } from 'rxjs';
-import { Box, Text, Newline, useApp } from 'ink';
+import { Box, Text, Newline, useApp, useStdout } from 'ink';
 import Spinner from 'ink-spinner';
 
 import testUploadSpeed from './uploadSpeed.js';
@@ -53,6 +53,7 @@ const Fast = ({ argument, testTimeout }) => {
     const [uploadSpeed, setUploadSpeed] = useState(undefined);
     const [isDone, setIsDone] = useState(false);
     const { exit } = useApp();
+    const { write } = useStdout();
 
     const upload = argument === '--upload' || argument === '-u';
 
@@ -68,7 +69,6 @@ const Fast = ({ argument, testTimeout }) => {
                         },
                         error: error => {
                             setError(error.message);
-                            setIsDone(true);
                         },
                         complete: () => {
                             setIsDone(true);
@@ -85,7 +85,6 @@ const Fast = ({ argument, testTimeout }) => {
                         },
                         error: error => {
                             setError(error.message);
-                            setIsDone(true);
                         },
                         complete: () => {
                             setIsDone(true);
@@ -94,23 +93,27 @@ const Fast = ({ argument, testTimeout }) => {
                 break;
             case '--help':
             case '-h':
-                printHelp();
+                write(printHelp());
                 setIsDone(true);
                 break;
             default:
-                setError(
+                write(
                     'You need to need to provide a valid argument to the command. Run internetSpeed -h for help',
                 );
                 setIsDone(true);
                 break;
         }
-    }, [argument, exit, testTimeout]);
+    }, [argument, testTimeout, write]);
 
     useEffect(() => {
         if (isDone) {
             exit();
         }
-    }, [exit, isDone]);
+
+        if (error) {
+            exit(error);
+        }
+    }, [exit, isDone, error]);
 
     if (error) {
         return <ErrorMessage text={error} />;

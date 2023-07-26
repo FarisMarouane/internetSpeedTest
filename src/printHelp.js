@@ -31,8 +31,7 @@ const sections = [
 ];
 
 function printHelp() {
-    const usage = commandLineUsage(sections);
-    console.log(usage);
+    return commandLineUsage(sections);
 }
 
 export default printHelp;
